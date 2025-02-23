@@ -1,0 +1,22 @@
+.navbar-offcanvas {
+    width: 75%; 
+    max-width: 300px; 
+  }
+  
+  .navbar-offcanvas.show {
+<<<<<<< HEAD
+    background-color: #a9a9a9;
+    transform: translateX(0%); /* Ensures the sidebar fully enters the viewport */
+=======
+    transform: translateX(0%); 
+>>>>>>> 9762cee7e222034c2dc41df526f943f5d761c847
+  }
+  
+  
+  @media (min-width: 992px) {
+    .navbar-offcanvas {
+      transform: none;
+    }
+    
+  }
+  

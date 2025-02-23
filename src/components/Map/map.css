@@ -1,0 +1,184 @@
+#map {
+  width: 100%;
+  /* height: 100vh; */
+}
+
+
+
+/* Reset Leaflet tile styles */
+.leaflet-container img {
+  max-width: none !important;
+  max-height: none !important;
+}
+
+/* Add this CSS to your map.css file */
+.leaflet-touch .leaflet-control-layers-toggle {
+  color: green;
+  background-color: green !important;
+  /* Change the color of the icon to green */
+}
+
+.__dropdown-toggle {
+  display: flex;
+  justify-content: center;
+  border: 2px solid black;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  /* Position below the button */
+  left: 0;
+  z-index: 1000;
+  /* Ensure it appears above other elements */
+  display: none;
+  /* Initially hidden */
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 0px;
+  padding: 5px 0;
+}
+
+.dropdown-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+  background-color: #f1f1f1;
+  /* Highlight on hover */
+}
+
+.draw-zone-button {
+  position: absolute;
+  bottom: 20px;
+  left: 75%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Ensure it's above the map */
+  background-color: #33db4a; /* Green color */
+  color: #fff;
+  border: none;
+  padding: 10px 15px; /* Adjusted for icon space */
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-directions-button{
+  position: absolute;
+  bottom: 20px;
+  left: 35%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Ensure it's above the map */
+  background-color: #33db4a; /* Green color */
+  color: #fff;
+  border: none;
+  padding: 10px 15px; /* Adjusted for icon space */
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.clear-directions-button:hover {
+  background: #2ba837; /* Slightly darker green on hover */
+  color: #000;
+}
+
+.draw-zone-button:hover {
+  background: #2ba837; /* Slightly darker green on hover */
+  color: #000;
+}
+
+.draw-zone-button svg {
+  margin-right: 5px; /* Space between the icon and text */
+}
+
+
+@media (min-width: 992px) {
+  .draw-zone-button {
+    bottom: 20px;
+    /* left: 5%; */
+    transform: translateX(-50%);
+  }
+
+  .clear-directions-button {
+    bottom: 20px;
+    /* left: 5%; */
+    transform: translateX(-50%);
+  }
+}
+
+/* Positioning and alignment for medium screens (tablets) */
+@media (max-width: 991px) and (min-width: 768px) {
+  .draw-zone-button {
+    bottom: 20px;
+    left: 60%;
+    transform: translateX(-40%);
+  }
+
+  .clear-directions-button {
+    bottom: 20px;
+    /* left: 50%; */
+    transform: translateX(-50%);
+  }
+}
+
+/* Positioning for small screens (phones) */
+@media (max-width: 767px) {
+  .draw-zone-button{
+    bottom: 10px; /* Less space at the bottom for smaller screens */
+    font-size: 14px; /* Smaller font size for mobile */
+    padding: 8px 12px; /* Adjust padding for mobile */
+    width: 90%; /* Make the buttons take more width on smaller screens */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%);
+  }
+  .clear-directions-button {
+    bottom: 40px; /* Less space at the bottom for smaller screens */
+    font-size: 14px; /* Smaller font size for mobile */
+    padding: 8px 12px; /* Adjust padding for mobile */
+    width: 90%; /* Make the buttons take more width on smaller screens */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%);
+  }
+
+  /* Stack buttons vertically on smaller screens */
+  .clear-directions-button {
+    margin-top: 0px; /* Space between the buttons */
+  }
+  .draw-zone-button{
+    margin-top: 15px;
+  }
+}
+
+/* Positioning for very small screens (extra small phones) */
+@media (max-width: 576px) {
+  .draw-zone-button{
+    
+    bottom: -40px; /* Less bottom spacing */
+    font-size: 12px; /* Even smaller font on very small screens */
+    padding: 10px 15px; /* Adjust padding further */
+  }
+  .clear-directions-button {
+
+    bottom: -75px; /* Less bottom spacing */
+    font-size: 12px; /* Even smaller font on very small screens */
+    padding: 6px 10px; /* Adjust padding further */
+  }
+}
