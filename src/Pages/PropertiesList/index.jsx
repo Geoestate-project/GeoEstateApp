@@ -5,7 +5,9 @@ import TopBar from "../../components/TopBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../index.css";
 import { Link } from "react-router-dom";
+import { IoClose } from "react-icons/io5";
 import "./propertieslist.css";
+import AddPropertyModal from "./AddPropertyModal";
 
 const PropertiesList = () => {
   const [properties, setProperties] = useState([]);
@@ -13,9 +15,12 @@ const PropertiesList = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [showAddModal, setShowAddModal] = useState(false);
   const propertiesPerPage = 12;
 
   useEffect(() => {
+    const role = localStorage.getItem("role");
+
     const fetchProperties = async () => {
       let progress = 0;
       const progressInterval = setInterval(() => {
@@ -26,7 +31,7 @@ const PropertiesList = () => {
 
       try {
         const response = await axios.get(
-          "http://homevocation-001-site4.atempurl.com/api/Property/getProperties"
+          "https://apis.geoestate.ai/api/Property/getPropertiesWithFoto"
         );
         setProperties(response.data);
         setTotalPages(Math.ceil(response.data.length / propertiesPerPage));
@@ -40,6 +45,21 @@ const PropertiesList = () => {
 
     fetchProperties();
   }, []);
+
+
+  console.log("properties",properties)
+  const handleDeleteProperty = async (propertyId) => {
+    try {
+      const response = await axios.delete(
+        `http://homevocation-001-site4.atempurl.com/api/Property/deleteProperty/${propertyId}`
+      );
+      console.log("Property Deleted:", response.data);
+      alert("Property deleted successfully!");
+    } catch (error) {
+      console.error("Failed to delete property:", error);
+      alert("Error deleting property. Please try again.");
+    }
+  };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -100,11 +120,24 @@ const PropertiesList = () => {
     return items;
   };
 
+  const handleAddProperty = () => {
+    setShowAddModal(true);
+  };
+
+  const handleCloseAddModal = () => {
+    setShowAddModal(false);
+  };
+
   return (
     <>
       <TopBar />
       <div className="container mt-5">
-        <h3 className="mb-4 text-center">Properties List</h3>
+        <h3 className="mb-4 text-center fw-bold">Properties List</h3>
+
+        <AddPropertyModal
+          show={showAddModal}
+          handleClose={handleCloseAddModal}
+        />
         {loadingProgress < 100 ? (
           <div
             className="d-flex flex-column justify-content-center align-items-center"
@@ -125,72 +158,88 @@ const PropertiesList = () => {
             </div>
           </div>
         ) : (
-          <div className="row">
-            {properties
-              .slice(
-                (currentPage - 1) * propertiesPerPage,
-                currentPage * propertiesPerPage
-              )
-              .map((property, index) => (
-                <div key={index} className="col-lg-4 col-md-6 mb-4">
-                  <div className="card h-100 shadow">
-                    <img
-                      src={property.foto}
-                      alt="Property"
-                      className="card-img-top"
-                      style={{ height: "200px", objectFit: "cover" }}
-                    />
-                    <div className="card-body">
-                      <h5 className="card-title text-truncate">
-                        {property.titulo}
-                      </h5>
-                      <p className="card-text">
-                        <strong>Price:</strong> $
-                        {property.precio.toLocaleString()} <br />
-                        <strong>Location:</strong> {displayLocation(property)}
-                      </p>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Button
-                          style={{ backgroundColor: "#33db4a", border: "none" }}
-                          onClick={() => setSelectedProperty(property)}
-                        >
-                          View Details
-                        </Button>
-                        <Link to="/UserPanel">
-                          <Button
-                            style={{
-                              backgroundColor: "#33db4a",
-                              border: "none",
-                            }}
-                          >
-                            View in Map
-                          </Button>
-                        </Link>
-                      </div>
+          <>
+            <div className="w-100 d-flex my-3">
+              <Button
+                variant="success"
+                onClick={handleAddProperty}
+                className="ms-auto me-3"
+                style={{ backgroundColor: "var(--color-bg)" }}
+              >
+                Add Property
+              </Button>
+            </div>
 
+            <div className="row">
+              {properties
+                .slice(
+                  (currentPage - 1) * propertiesPerPage,
+                  currentPage * propertiesPerPage
+                )
+                .map((property, index) => (
+                  <div key={index} className="col-lg-6 col-md-6 mb-4">
+                    <div className="card h-100 shadow position-relative">
+
+                      {/* Close Button Positioned at Top Right */}
                       {/* <Button
+                        variant="none"
+                        onClick={() => handleDeleteProperty(property.idPropiedad)}
+                        className="position-absolute top-0 end-0 m-2 p-0"
                         style={{
-                          backgroundColor: "#33db4a",
+                          color: "white",
                           border: "none",
-                          marginLeft: "90px",
+                          boxShadow: "2px 2px gray",
+                          backgroundColor: "#33db4a",
+                          width: "30px",
+                          height: "30px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
                         }}
-                        onClick={() => setSelectedProperty(property)}
                       >
-                        View in Map
+                        <IoClose size={24} />
                       </Button> */}
+
+                      {/* Image with Full Coverage */}
+                      <img
+                        src={property.foto}
+                        alt="Property"
+                        className="card-img-top"
+                        style={{
+                          height: "200px",
+                          objectFit: "cover",
+                          width: "100%",
+                        }}
+                      />
+
+                      <div className="card-body">
+                        <h5 className="card-title text-truncate">{property.titulo}</h5>
+                        <p className="card-text">
+                          <strong>Price:</strong> ${property.precio} <br />   {/*  .toLocaleString() */}
+                          {/* <strong>Location:</strong> {displayLocation(property)} */}
+                        </p>
+                        <div className="d-flex justify-content-between align-items-center">
+                          <Button
+                            style={{ backgroundColor: "#33db4a", border: "none" }}
+                            onClick={() => setSelectedProperty(property)}
+                          >
+                            View Details
+                          </Button>
+                          <Link to="/UserPanel">
+                            <Button style={{ backgroundColor: "#33db4a", border: "none" }}>
+                              View in Map
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-          </div>
+                ))}
+            </div>
+
+          </>
         )}
-        <Pagination className="justify-content-center mt-4">
+        <Pagination className="justify-content-center mt-4 mb-4">
           {paginationItems()}
         </Pagination>
       </div>
@@ -215,7 +264,7 @@ const PropertiesList = () => {
                   </p>
                   <p>
                     <strong>Price:</strong> $
-                    {selectedProperty.precio.toLocaleString()}
+                    {selectedProperty.precio}
                   </p>
                   <p>
                     <strong>Bathrooms:</strong> {selectedProperty.banos}
@@ -231,8 +280,8 @@ const PropertiesList = () => {
                     <strong>Published Date:</strong>{" "}
                     {selectedProperty.fechaPublicacion
                       ? new Date(
-                          selectedProperty.fechaPublicacion
-                        ).toLocaleDateString()
+                        selectedProperty.fechaPublicacion
+                      ).toLocaleDateString()
                       : "Not available"}
                   </p>
                 </div>
@@ -276,7 +325,7 @@ const PropertiesList = () => {
                     <div className="card-body">
                       <h6 className="card-title">{prop.titulo}</h6>
                       <p className="card-text">
-                        ${prop.precio.toLocaleString()}
+                        ${prop.precio}
                       </p>
                       <div
                         style={{

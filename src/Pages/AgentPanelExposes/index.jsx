@@ -13,7 +13,8 @@ const AgentPanelExposes = () => {
                         <Form.Label>Search Expose</Form.Label>
                         <Form.Control type="text" placeholder="Enter expose name or keyword" required />
                     </Form.Group>
-                    <Button style={{ backgroundColor: '#33db4a' }} type="submit" className="w-100">
+                    <Button style={{ backgroundColor: '#33db4a', width: "100px" }} type="submit" >
+
                         Search
                     </Button>
                 </Form>

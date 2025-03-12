@@ -11,8 +11,8 @@
 
 .carousel img {
   object-fit: cover;
-  max-height: 300px;
-  width:100px;
+  /* max-height: 300px; */
+  /* width:100px; */
   display: block;
 }
 

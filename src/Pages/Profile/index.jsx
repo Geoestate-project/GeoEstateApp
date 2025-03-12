@@ -7,8 +7,7 @@ import UserTable from "../../components/UserTable";
 import Subscription from "../../components/Subscription";
 import CompanyData from "../../components/CompanyData";
 import BillingData from "../../components/BillingData";
-import "./profile.css"
-
+import "./profile.css";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("personal-data");
@@ -17,6 +16,7 @@ const Profile = () => {
     switch (activeTab) {
       case "personal-data":
         return <PersonalData />;
+
       case "biography":
         return <CompanyData />;
       case "analytics":
@@ -29,6 +29,7 @@ const Profile = () => {
         return <CompanyData />;
       case "billing-data":
         return <BillingData />;
+
       default:
         return <div>Select a tab from the sidebar</div>;
     }

@@ -1,7 +1,6 @@
 import React from "react";
 import logo from "../../assests/img/logo-removebg-preview.png";
 import { Link } from "react-router-dom";
-
 const AgentSidebar = () => {
   return (
     <div className="sidebar">

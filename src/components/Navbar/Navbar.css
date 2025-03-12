@@ -1,66 +1,53 @@
-body {
-  font-family: "Vietnam Pro", Sans-serif;
-  overflow-x: hidden;
-}
-
-/* Navbar Styles */
-nav.navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
+/* Style the Google Translate dropdown */
+#google_translate_element select {
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
   background-color: white;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  color: black;
 }
 
-.navbar-brand img {
-  height: 60px;
+/* Hide the Google Translate branding */
+#google_translate_element .goog-te-gadget {
+  font-family: Arial, sans-serif;
+  font-size: 0;
+  /* Hide extra text */
 }
 
-.navbar-nav {
-  flex: 2;
-  justify-content: center;
-}
-
-.nav-link {
-  color: #333;
-  font-weight: 500;
+.nav-link-underline {
+  position: relative;
+  color: #000;
   text-decoration: none;
-}
-
-.nav-link:hover {
-  color: #28a745;
-  text-decoration: underline;
-}
-
-.navbar-right {
-  display: flex;
-  justify-content: flex-end;
-  align-items: baseline;
-}
-
-.navbar-right .btn-access,
-.navbar-right .btn-record,
-.navbar-right .dropdown {
-  margin-left: 10px;
-}
-
-.btn-access {
+  padding: 0px 30px !important;
   font-weight: 500;
-  color: #000000;
+  font-size: 17px;
 }
 
-.btn-record {
-  font-weight: 500;
-  color: #28a745;
+/* The animated underline (hidden by default) */
+.nav-link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  /* Adjust spacing below the text */
+  height: 2px;
+  background-color: #33db4a;
+  /* The underline color */
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease-out;
 }
 
-.language-icons img {
-  height: 20px;
+/* Reveal the underline on hover */
+.nav-link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
-.dropdown-menu img {
-  height: 20px;
+/* Remove default underline and maintain color on hover */
+.nav-link-underline:hover {
+  text-decoration: none;
+  color: #33db4a;
 }

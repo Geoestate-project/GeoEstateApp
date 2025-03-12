@@ -13,7 +13,8 @@ const ClienttoBuyer = () => {
                         <Form.Label>Buyer Name</Form.Label>
                         <Form.Control type="text" placeholder="Enter Buyer Name" required />
                     </Form.Group>
-                    <Button style={{ backgroundColor: '#33db4a' }} type="submit" className="w-100">
+                    <Button style={{ backgroundColor: '#33db4a', width: "100px" }} type="submit" >
+
                         Add Buyer
                     </Button>
                 </Form>

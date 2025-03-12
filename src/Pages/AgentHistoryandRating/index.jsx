@@ -19,7 +19,7 @@ const AgentHistory = () => {
                                 <span>Viewed Expose: "Modern Apartment in Madrid" (10/25/2024)</span>
                             </Col>
                             <Col xs={2}>
-                                <Button variant="success" style={{ backgroundColor: "var(--color)" }} size="sm">Remove</Button>
+                                <Button variant="success" style={{ backgroundColor: "var(--color-bg)" }} size="sm">Remove</Button>
                             </Col>
                         </Row>
                         <Row className="history-item mt-3">
@@ -27,7 +27,7 @@ const AgentHistory = () => {
                                 <span>Viewed Expose: "Cozy Villa in Barcelona" (10/22/2024)</span>
                             </Col>
                             <Col xs={2}>
-                                <Button variant="success" style={{ backgroundColor: "var(--color)" }} size="sm">Remove</Button>
+                                <Button variant="success" style={{ backgroundColor: "var(--color-bg)" }} size="sm">Remove</Button>
                             </Col>
                         </Row>
                     </div>
@@ -42,7 +42,7 @@ const AgentHistory = () => {
                                 <span>"Modern Apartment in Madrid" - ⭐⭐⭐⭐⭐</span>
                             </Col>
                             <Col xs={2}>
-                                <Button variant="success" style={{ backgroundColor: "var(--color)" }} size="sm">Remove</Button>
+                                <Button variant="success" style={{ backgroundColor: "var(--color-bg)" }} size="sm">Remove</Button>
                             </Col>
                         </Row>
                     </div>
@@ -50,7 +50,7 @@ const AgentHistory = () => {
 
                 {/* Download Button */}
                 <section className="mt-4 text-center">
-                    <Button variant="success" className="w-50" style={{ backgroundColor: "var(--color)" }} id="downloadBtn">
+                    <Button variant="success" className="w-50" style={{ backgroundColor: "var(--color-bg)" }} id="downloadBtn">
                         Download History and Ratings
                     </Button>
                 </section>

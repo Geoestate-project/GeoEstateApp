@@ -1,4 +1,4 @@
-/* Custom container to hold the sidebar and main content */
+
 .custom-container {
   display: flex;
   height: 100vh;
@@ -6,9 +6,9 @@
   padding: 0;
 }
 
-/* Sidebar styling */
+
 .custom-sidebar {
-  background-color: #33db4a;
+  background-color: var(--color-bg);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,9 +21,18 @@
   z-index: 1000;
 }
 
-/* Main content styling */
+
 .custom-main-content {
   margin-left: 60px;
-  width: calc(100% - 60px); /* Fill the remaining width */
+  width: calc(100% - 60px); 
   padding: 0;
 }
+
+.custom-tooltip .tooltip-inner {
+  background-color: white !important; 
+  color: black;     
+  padding: 10px 35px;  
+  font-weight: 700;    
+  border: 1px solid black;
+}
+

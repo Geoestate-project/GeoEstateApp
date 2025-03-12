@@ -22,18 +22,18 @@ const AgentBuyer = () => {
                                         <ListGroup.Item>Assign notifications and tasks to agents.</ListGroup.Item>
                                         <ListGroup.Item>Track property interests and buyer activities.</ListGroup.Item>
                                     </ListGroup>
-                                    <Button variant="success" style={{ backgroundColor: "var(--color)" }} className="w-100">Add Responsibility</Button>
+                                    <Button variant="success" style={{ backgroundColor: "var(--color-bg)" }} className="w-100">Add Responsibility</Button>
                                 </section>
                                 <section className="mt-4">
                                     <h4>Actions</h4>
                                     <Row className="g-2">
                                         <Col>
-                                            <Button variant="success" style={{ backgroundColor: "var(--color)" }} className="w-100" data-bs-toggle="modal" data-bs-target="#buyersModal">
+                                            <Button variant="success" style={{ backgroundColor: "var(--color-bg)" }} className="w-100" data-bs-toggle="modal" data-bs-target="#buyersModal">
                                                 View Buyers
                                             </Button>
                                         </Col>
                                         <Col>
-                                            <Button variant="success" style={{ backgroundColor: "var(--color)" }} className="w-100" data-bs-toggle="modal" data-bs-target="#tasksModal">
+                                            <Button variant="success" style={{ backgroundColor: "var(--color-bg)" }} className="w-100" data-bs-toggle="modal" data-bs-target="#tasksModal">
                                                 Assign Tasks
                                             </Button>
                                         </Col>

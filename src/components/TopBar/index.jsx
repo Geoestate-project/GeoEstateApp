@@ -14,43 +14,160 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Filters from "../../components/Filters";
 import "./topbar.css";
 import { Link, useLocation } from "react-router-dom";
+import { FaFilter } from "react-icons/fa6";
 
 const TopBar = ({ properties, updateProperties }) => {
+  const [zones, setZones] = useState([]);
+  const [municipalities, setMunicipalities] = useState([]);
+  const [calles, setCalles] = useState([]);
+  const [provinces, setProvinces] = useState([]);
+
+  const [filters, setFilters] = useState({
+    version: "",
+    sortBy: "",
+    country: "",
+    community: "",
+    municipality: "",
+    province: "",
+    zone: "",
+    city: "",
+    minPrice: "",
+    maxPrice: "",
+    minArea: "",
+    maxArea: "",
+    residential: "",
+    commercial: "",
+    calle: "",
+  });
+
   const [showSidebar, setShowSidebar] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [language, setLanguage] = useState("Select Language");
+  const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [empresas, setEmpresas] = useState([]);
   const [maxPrice, setMaxPrice] = useState("");
   const [maxArea, setMaxArea] = useState("");
   const [selectedColor, setSelectedColor] = useState("white");
-  const prices = [];
-  const areas = []; // Array for area values
 
+  const prices = [];
+  const areas = [];
   for (let area = 50; area <= 5000; area += 50) {
     areas.push(`${area} sqm`);
   }
-
-  const location = useLocation();
-
   for (let price = 100000; price <= 3100000; price += 50000) {
     prices.push(`$${price.toLocaleString()}`);
   }
+
+  const location = useLocation();
+  console.log(location.pathname.split("/")[1]);
+
+  const fetchProvinces = async () => {
+    try {
+      const response = await fetch(
+        "https://apis.geoestate.ai/api/MapApi/zonas"
+      );
+      if (!response.ok) throw new Error("Failed to fetch provinces");
+      const data = await response.json();
+      console.log("Provinces API Response:", data);
+      setProvinces(data);
+    } catch (error) {
+      console.error("Error fetching provinces:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProvinces();
+  }, []);
+
+  const fetchZones = async (idProvincia) => {
+    try {
+      const response = await fetch(
+        `https://apis.geoestate.ai/api/MapApi/zonas/${idProvincia}`
+      );
+      if (!response.ok) throw new Error("Failed to fetch zones");
+      const data = await response.json();
+      console.log("Zones API Response:", data);
+      setZones(data);
+    } catch (error) {
+      console.error("Error fetching zones:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (filters.province) {
+      fetchZones(filters.province);
+      setFilters((prev) => ({
+        ...prev,
+        zone: "",
+        municipality: "",
+        calle: "",
+      }));
+      setMunicipalities([]);
+      setCalles([]);
+    } else {
+      setZones([]);
+    }
+  }, [filters.province]);
+
+  useEffect(() => {
+    if (filters.zone && filters.province) {
+      fetch(
+        `https://apis.geoestate.ai/api/MapApi/municipios/${filters.province}?idZona=${filters.zone}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Municipalities API Response:", data);
+          setMunicipalities(data);
+          setFilters((prev) => ({ ...prev, municipality: "", calle: "" }));
+        })
+        .catch((err) => console.error("Error fetching municipalities:", err));
+    } else {
+      setMunicipalities([]);
+    }
+  }, [filters.zone, filters.province]);
+
+  useEffect(() => {
+    if (filters.municipality && filters.province) {
+      fetch(
+        `https://apis.geoestate.ai/api/MapApi/calles/${filters.province}?idMunicipio=${filters.municipality}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Calles API Response:", data);
+          setCalles(data);
+          setFilters((prev) => ({ ...prev, calle: "" }));
+        })
+        .catch((err) => console.error("Error fetching calles:", err));
+    } else {
+      setCalles([]);
+    }
+  }, [filters.municipality, filters.province]);
 
   const handleLanguageChange = (lang) => {
     setLanguage(lang);
   };
 
+  const handleProvinceChange = (idProvincia) => {
+    setFilters({
+      ...filters,
+      province: idProvincia,
+      municipality: "",
+      zone: "",
+      calle: "",
+    });
+  };
+
   const handleColorChange = (color) => {
     setSelectedColor(color);
-    localStorage.setItem("selectedColor", color); // Save selected color to localStorage
-    window.dispatchEvent(new Event("storage")); // Notify other components
+    localStorage.setItem("selectedColor", color);
+    window.dispatchEvent(new Event("storage"));
   };
 
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchTerm(value);
-
     if (value.length > 0) {
       const filteredProperties = properties.filter((property) => {
         const titleMatch = property.titulo
@@ -65,10 +182,8 @@ const TopBar = ({ properties, updateProperties }) => {
         const municipalityMatch = property.municipio
           ? property.municipio.toLowerCase().includes(value.toLowerCase())
           : false;
-
         return titleMatch || zoneMatch || descriptionMatch || municipalityMatch;
       });
-
       console.log(filteredProperties.slice(0, 3));
       setSuggestions(filteredProperties);
     } else {
@@ -76,25 +191,11 @@ const TopBar = ({ properties, updateProperties }) => {
     }
   };
 
-  const [filters, setFilters] = useState({
-    version: "",
-    sortBy: "",
-    country: "",
-    community: "",
-    municipality: "",
-    minPrice: "",
-    maxPrice: "",
-    minArea: "",
-    maxArea: "",
-    residential: "",
-    commercial: "",
-  });
-
   const handleMaxPriceChange = (price) => {
     setMaxPrice(price);
     setFilters((prevFilters) => ({
       ...prevFilters,
-      maxPrice: price,
+      maxPrice: price.replace(/\D/g, ""),
     }));
   };
 
@@ -102,7 +203,7 @@ const TopBar = ({ properties, updateProperties }) => {
     setMaxArea(area);
     setFilters((prevFilters) => ({
       ...prevFilters,
-      maxArea: area.replace(/\D/g, ""), // Assuming you want to extract numeric values only
+      maxArea: area.replace(/\D/g, ""),
     }));
   };
 
@@ -113,18 +214,22 @@ const TopBar = ({ properties, updateProperties }) => {
       country: "",
       community: "",
       municipality: "",
+      province: "",
+      zone: "",
+      city: "",
       minPrice: "",
       maxPrice: "",
       minArea: "",
       maxArea: "",
       residential: "",
       commercial: "",
+      calle: "",
     });
     setMaxPrice("");
     setMaxArea("");
     setSearchTerm("");
     setSuggestions([]);
-    updateProperties([]); // Optionally reset displayed properties
+    updateProperties([]);
   };
 
   const handleSelectSuggestion = (property) => {
@@ -136,44 +241,39 @@ const TopBar = ({ properties, updateProperties }) => {
   const fetchProperties = async () => {
     const params = new URLSearchParams({
       ...filters,
-      maxPrice: maxPrice.replace(/\D/g, ""), // Remove non-numeric characters for API call
+      maxPrice: maxPrice.replace(/\D/g, ""),
+      municipality: filters.municipality || "",
+      province: filters.province || "",
+      city: filters.city || "",
     });
-
     try {
       const response = await fetch(
-        `http://homevocation-001-site4.atempurl.com/api/FilterProperties?${params.toString()}`,
-        {
-          method: "GET",
-        }
+        `https://apis.geoestate.ai/api/FilterProperties?${params.toString()}`
       );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
       updateProperties(data);
-      console.log(data); // Log the properties to see the fetched data
     } catch (error) {
-      console.error("Failed to fetch properties:", error);
+      console.error("Failed  to fetch properties::", error);
     }
   };
 
   useEffect(() => {
     if (maxPrice || maxArea) {
-      fetchProperties(); // Call fetchProperties when maxPrice changes
+      fetchProperties();
     }
-  }, [maxPrice, maxArea]); // Dependency array to trigger re-fetch when maxPrice changes
+  }, [maxPrice, maxArea]);
 
   return (
     <>
-      <div className="container"></div>
       <Navbar
-        variant="dark"
+        collapseOnSelect
         expand="lg"
-        className="px-3 px-md-5"
+        variant="dark"
+        className="p-3 py-4 px-md-5"
         style={{
           zIndex: "100",
-          backgroundColor: "forestgreen",
+          backgroundColor: "var(--color-bg)",
           boxShadow: "none",
         }}
       >
@@ -183,24 +283,25 @@ const TopBar = ({ properties, updateProperties }) => {
         />
         <Navbar.Collapse id="navbar-side">
           <Nav className="me-auto w-100 d-flex flex-column flex-lg-row align-items-center">
-            <Form className="d-flex flex-row w-100 mb-3 mb-lg-0">
+            <Form className="d-flex flex-column flex-md-row w-100 mb-3 mb-lg-0 align-items-center">
               <FormControl
                 type="text"
                 placeholder="Search location..."
-                className="mr-sm-2 search-map rounded-1"
+                className="mr-sm-2 search-map rounded-1 mb-2 mb-md-0"
                 value={searchTerm}
                 onChange={handleSearchChange}
               />
               <Button
                 variant="outline-light"
-                className="rounded-1"
-                style={{ backgroundColor: "var(--color)" }}
+                className="rounded-1 mb-2 mb-md-0 mx-md-2"
+                style={{ backgroundColor: "var(--color-bg)" }}
               >
                 <FontAwesomeIcon icon={faSearch} />
               </Button>
               <Button
                 variant="outline-light"
-                style={{ backgroundColor: "var(--color)" }}
+                className="rounded-1 mb-2 mb-md-0"
+                style={{ backgroundColor: "var(--color-bg)" }}
                 onClick={handleClearFilters}
               >
                 Clear Filters
@@ -208,7 +309,7 @@ const TopBar = ({ properties, updateProperties }) => {
               {suggestions.length > 0 && (
                 <ListGroup
                   className="position-absolute w-100"
-                  style={{ marginTop: "40px", maxWidth: "300px" }}
+                  style={{ top: "100%", left: "0", zIndex: 1050, maxWidth: "300px" }}
                 >
                   {suggestions.slice(0, 3).map((suggestion, index) => (
                     <ListGroup.Item
@@ -223,72 +324,173 @@ const TopBar = ({ properties, updateProperties }) => {
             </Form>
           </Nav>
 
-          <div className="d-flex justify-content-between align-items-center w-100">
+          <div className="d-flex flex-column flex-md-row justify-content-end align-items-center w-100">
             <Button
               variant="outline-light"
-              className="rounded-1 mx-2 d-flex flex-row align-items-center gap-2"
-              style={{ backgroundColor: "var(--color)" }}
+              className="rounded-1 mx-2 my-1"
+              style={{ backgroundColor: "var(--color-bg)" }}
               onClick={() => setShowFilter((prev) => !prev)}
             >
               <FontAwesomeIcon icon={faFilter} /> Filter
             </Button>
 
-            <div className="d-flex">
-              {/* Max Price Dropdown */}
-              <Dropdown className="mx-2">
-                <Dropdown.Toggle
-                  variant="outline-light"
-                  className="rounded-1"
-                  style={{ backgroundColor: "var(--color)" }}
-                >
-                  {maxPrice || "Max Price"}
-                </Dropdown.Toggle>
-                <Dropdown.Menu
-                  style={{
-                    height: "300px",
-                    maxWidth: "150px",
-                    overflowY: "scroll",
-                  }}
-                >
-                  {prices.map((price) => (
-                    <Dropdown.Item
-                      key={price}
-                      onClick={() => handleMaxPriceChange(price)}
-                    >
-                      {price}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
+            <Button
+              variant="outline-light"
+              className="rounded-1 mx-2 my-1 d-flex flex-row align-items-center gap-2 text-nowrap"
+              style={{ backgroundColor: "var(--color-bg)" }}
+              onClick={() => {
+                fetchProperties();
+                setShowMoreFilters(true);
+              }}
+            >
+              <i className="fa-solid fa-magnifying-glass"></i> More Filters
+            </Button>
 
-              <Dropdown className="mx-2">
-                <Dropdown.Toggle
-                  variant="outline-light"
-                  className="rounded-1"
-                  style={{ backgroundColor: "var(--color)" }}
-                >
-                  {maxArea || "Max Area"}
-                </Dropdown.Toggle>
-                <Dropdown.Menu
-                  style={{ maxHeight: "300px", overflowY: "scroll" }}
-                >
-                  {areas.map((area) => (
-                    <Dropdown.Item
-                      key={area}
-                      onClick={() => handleMaxAreaChange(area)}
-                    >
-                      {area}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
+            <div className="d-flex flex-column flex-lg-row my-1">
+              <Offcanvas
+                show={showMoreFilters}
+                onHide={() => setShowMoreFilters(false)}
+                placement="end"
+                className="modal-custom-bg"
+              >
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title className="text-white">
+                    More Filters
+                  </Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                  <Form>
+                    {/* Province Dropdown */}
+                    <Form.Group controlId="formProvince">
+                      <Form.Label className="text-white">
+                        Province
+                      </Form.Label>
+                      <Form.Select
+                        className="custom-modal-color"
+                        value={filters.province || ""}
+                        onChange={(e) =>
+                          handleProvinceChange(e.target.value)
+                        }
+                      >
+                        <option value="">Select Province</option>
+                        {provinces.map((province) => (
+                          <option
+                            key={province.idProvincia}
+                            value={province.idProvincia}
+                          >
+                            {province.idProvincia}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
 
-              <Dropdown className="mx-2">
+                    {/* Zone Dropdown */}
+                    <Form.Group controlId="formZone" className="mt-3">
+                      <Form.Label className="text-white">Zone</Form.Label>
+                      <Form.Select
+                        className="custom-modal-color"
+                        value={filters.zone || ""}
+                        onChange={(e) =>
+                          setFilters({ ...filters, zone: e.target.value })
+                        }
+                        disabled={!filters.province}
+                      >
+                        <option value="">Select Zone</option>
+                        {zones.length > 0 ? (
+                          zones.map((zone) => (
+                            <option key={zone.idZona} value={zone.idZona}>
+                              {zone.nombreZona}
+                            </option>
+                          ))
+                        ) : (
+                          <option disabled>Loading...</option>
+                        )}
+                      </Form.Select>
+                    </Form.Group>
+
+                    {/* Municipality Dropdown */}
+                    <Form.Group controlId="formMunicipality" className="mt-3">
+                      <Form.Label>Municipality</Form.Label>
+                      <Form.Select
+                        value={filters.municipality || ""}
+                        onChange={(e) =>
+                          setFilters({
+                            ...filters,
+                            municipality: e.target.value,
+                          })
+                        }
+                        disabled={!filters.zone}
+                      >
+                        <option value="">Select Municipality</option>
+                        {municipalities.length > 0 ? (
+                          municipalities.map((municipality) => (
+                            <option
+                              key={municipality.idMunicipio}
+                              value={municipality.idMunicipio}
+                            >
+                              {municipality.nombre}
+                            </option>
+                          ))
+                        ) : (
+                          <option disabled>Loading...</option>
+                        )}
+                      </Form.Select>
+                    </Form.Group>
+
+                    {/* Calles Dropdown */}
+                    <Form.Group controlId="formCalles" className="mt-3">
+                      <Form.Label>Calles</Form.Label>
+                      <Form.Select
+                        value={filters.calle || ""}
+                        onChange={(e) =>
+                          setFilters({ ...filters, calle: e.target.value })
+                        }
+                      >
+                        <option value="">Select Calle</option>
+                        {calles.length > 0 ? (
+                          calles.map((calle) => (
+                            <option key={calle.idCalle} value={calle.idCalle}>
+                              {calle.nombre}
+                            </option>
+                          ))
+                        ) : (
+                          <option disabled>Loading...</option>
+                        )}
+                      </Form.Select>
+                    </Form.Group>
+
+                    <div className="d-flex mt-4 flex-column flex-md-row">
+                      <Button
+                        variant="primary"
+                        className="custom-modal-color mb-2 mb-md-0"
+                        onClick={() => {
+                          fetchProperties();
+                          setShowMoreFilters(false);
+                        }}
+                      >
+                        Apply Filters
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        className="custom-modal-color ms-md-3"
+                        onClick={() => {
+                          handleClearFilters();
+                          setShowMoreFilters(false);
+                        }}
+                      >
+                        Clear Filters
+                      </Button>
+                    </div>
+                  </Form>
+                </Offcanvas.Body>
+              </Offcanvas>
+
+              <Dropdown className="mx-2 my-1">
                 <Dropdown.Toggle
                   variant="outline-light"
                   id="dropdown-color"
                   className="rounded-1"
-                  style={{ backgroundColor: "var(--color)" }}
+                  style={{ backgroundColor: "var(--color-bg)" }}
                 >
                   Color
                 </Dropdown.Toggle>
@@ -308,12 +510,12 @@ const TopBar = ({ properties, updateProperties }) => {
                 </Dropdown.Menu>
               </Dropdown>
 
-              <Dropdown onSelect={handleLanguageChange} className="mx-2">
+              <Dropdown onSelect={handleLanguageChange} className="mx-2 my-1">
                 <Dropdown.Toggle
                   variant="outline-light"
                   id="language-dropdown"
                   className="rounded-1"
-                  style={{ backgroundColor: "var(--color)" }}
+                  style={{ backgroundColor: "var(--color-bg)" }}
                 >
                   {language}
                 </Dropdown.Toggle>
@@ -324,22 +526,27 @@ const TopBar = ({ properties, updateProperties }) => {
                   <Dropdown.Item eventKey="de">German</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
+
               <Button
                 variant="outline-light"
-                className="rounded-1"
-                style={{ backgroundColor: "var(--color)" }}
+                className="rounded-1 my-1"
+                style={{ backgroundColor: "var(--color-bg)" }}
               >
                 <Link
                   to={
                     !location.pathname.includes("PropertiesList")
-                      ? "/UserPanel/PropertiesList"
-                      : "/UserPanel"
+                      ? `/${location.pathname.split("/")[1]}/PropertiesList`
+                      : `/${location.pathname.split("/")[1]}`
                   }
-                  className="d-flex flex-row align-items-center gap-1"
+                  className="d-flex flex-row align-items-center gap-1 text-decoration-none"
                 >
-                  <i className={!location.pathname.includes("PropertiesList")
-                      ? "fas fa-chart-area"
-                      : "fa-solid fa-map"}></i>
+                  <i
+                    className={
+                      !location.pathname.includes("PropertiesList")
+                        ? "fas fa-chart-area"
+                        : "fa-solid fa-map"
+                    }
+                  ></i>
                   <p className="text-nowrap m-0">
                     {!location.pathname.includes("PropertiesList")
                       ? "List Section"

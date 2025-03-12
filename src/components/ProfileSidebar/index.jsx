@@ -1,11 +1,17 @@
 import React from "react";
 import logo from "../../assests/img/logo-removebg-preview.png";
+import { Link } from "react-router-dom";
 
 const Sidebar = ({ onTabChange }) => {
   return (
     <div className="sidebar">
       <img src={logo} alt="Logo" />
       <ul>
+        <Link to="/UserPanel">
+          <li>
+            <i class="fa-solid fa-map"></i>
+          </li>
+        </Link>
         <li onClick={() => onTabChange("personal-data")}>
           <i className="fas fa-user" title="Personal Data"></i>
         </li>

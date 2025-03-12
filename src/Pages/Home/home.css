@@ -28,7 +28,7 @@
 
 .agents img {
     border-radius: 50%;
-    margin-right: 5px;
+    margin-right: -12px;
 }
 
 .agents span {
@@ -37,10 +37,10 @@
 }
 
 .offer-btn {
-    background-color: #28a745;
+    background-color: #28a746a2;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 15px;
     border-radius: 25px;
     font-size: 1rem;
     font-weight: 500;
@@ -217,6 +217,10 @@
 .pricing-header {
     text-align: center;
     margin-bottom: 50px;
+
+    h1 {
+        font-size: 33px !important;
+    }
 }
 
 .pricing-header h1 {
@@ -250,7 +254,7 @@
 }
 
 .highlight {
-    background-color: #28a745;
+    background-color: #33DB4A;
     color: #fff;
 }
 
@@ -301,7 +305,7 @@
 }
 
 .accordion-button:not(.collapsed) {
-    background-color: #04b631;
+    background-color: #33DB4A;
     color: white;
     font-weight: bold;
     transition: background-color 0.3s, transform 0.3s;
@@ -472,7 +476,6 @@ ul {
 }
 
 img {
-    max-width: 100%;
     height: auto;
 }
 
@@ -648,7 +651,6 @@ img {
 }
 
 img {
-    max-width: 100%;
     height: auto;
     display: block;
 }
@@ -685,13 +687,57 @@ img {
     }
 
     img {
-        max-width: 100%;
         height: auto;
         display: block;
     }
 }
 
-.carousel img {
+/* .carousel img {
     width: 200px !important;
     margin-left: 500px;
+} */
+ /* Remove .FAQ { background-color: #a1a1a1; } */
+/* or replace it with: */
+.FAQ {
+    background-color: #33DB4A26;
+    padding-top: 5rem; 
+    padding-bottom: 5rem; 
 }
+
+.faq-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #636466;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: fadeInDown 1.2s ease-in-out;
+}
+
+/* Remove or comment out row overrides if you want normal spacing */
+.row {
+    /* margin-left: 0 !important;
+    margin-right: 0 !important; */
+}
+
+/* Accordion colors to match first image */
+.accordion-button:not(.collapsed) {
+    background-color: #33DB4A;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s;
+}
+.accordion-button {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+    border: none;
+    /* remove the shadow if you don't want it */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+.accordion-button:hover {
+    /* box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); */
+}
+
+/* ... keep the rest of your styles as is, or remove any conflicting parts ... */

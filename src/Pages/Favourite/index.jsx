@@ -16,13 +16,13 @@ const FavoritesPage = () => {
           overflowY: "auto",
         }}
       >
-        <Row className="mb-3">
+        <Row className="mb-3 Favourite">
           <Col md={{ span: 10, offset: 1 }}>
             <h1 style={{ fontWeight: "bold", marginBottom: "10px" }}>
-              Favorites
+              Favourites
             </h1>
             <p style={{ color: "#6c757d", marginBottom: "20px" }}>
-              Your favorite items will appear here.
+              Your favourite items will appear here.
             </p>
             <Button
               style={{ backgroundColor: "#28a745", borderColor: "#28a745" }}
@@ -30,31 +30,6 @@ const FavoritesPage = () => {
             >
               + Create Folder
             </Button>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={{ span: 10, offset: 1 }}>
-            <Card className="mb-3">
-              <Card.Body>
-                <div className="d-flex align-items-center">
-                  <Image
-                    src={image}
-                    rounded
-                    className="img-fluid"
-                    style={{ width: "40%", marginBottom: "10px" }}
-                  />
-                  <div className="text-center ms-5">
-                    <p style={{ marginBottom: "5px" }}>
-                      REF: CSA1938 7 BEDROOM COUNTRY VILLA WITH HIGH RENTAL
-                      POTENTIAL IN FRIGILIANA
-                    </p>
-                    <p style={{ fontWeight: "bold", color: "#007bff" }}>
-                      1,300,000 €
-                    </p>
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>
           </Col>
         </Row>
       </Container>

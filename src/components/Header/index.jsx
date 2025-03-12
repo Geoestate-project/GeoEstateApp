@@ -1,98 +1,90 @@
-import React, { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import {
-    Container,
-    Navbar,
-    Nav,
-    NavDropdown,
-    Offcanvas,
-} from "react-bootstrap";
-import logo from "../../assests/img/logo.png";
-import flag from "../../assests/img/flag.webp";
-import "./Header.css";
+import React, { useEffect } from "react";
+import { Navbar, Nav, Container, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import ImgLogo from "../../assests/img/logo.png"; // Your logo image
 
-const Header = () => {
-    const [language, setLanguage] = useState("Eng");
-
-    const handleLanguageChange = (lang) => {
-        setLanguage(lang);
-        toast.success(`Language changed to: ${lang}`);
+const CustomNavbar = () => {
+  useEffect(() => {
+    const addGoogleTranslateScript = () => {
+      if (!window.google) {
+        const script = document.createElement("script");
+        script.src =
+          "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        script.type = "text/javascript";
+        script.async = true;
+        script.defer = true;
+        document.body.appendChild(script);
+      } else if (window.google && window.google.translate) {
+        window.googleTranslateElementInit();
+      }
     };
 
-    return (
-        <Navbar bg="white" expand="lg" className="py-3 shadow-sm" variant="light">
-            <ToastContainer />
-            <Container fluid>
-                {/* Logo */}
-                <Navbar.Brand href="#home" className="d-flex align-items-center">
-                    <img src={logo} alt="GeoEstate Logo" height="30" />
-                </Navbar.Brand>
+    // Initialize Google Translate
+    window.googleTranslateElementInit = function () {
+      new window.google.translate.TranslateElement(
+        {
+          pageLanguage: "en",
+          includedLanguages: "en,fr,de,es,it", // Add more languages if needed
+          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+        },
+        "google_translate_element"
+      );
+    };
 
-                {/* Toggle Button for Mobile */}
-                <Navbar.Toggle aria-controls="offcanvasNavbar" />
-                <Navbar.Offcanvas
-                    id="offcanvasNavbar"
-                    aria-labelledby="offcanvasNavbarLabel"
-                    placement="end"
-                >
-                    <Offcanvas.Header closeButton>
-                        <Offcanvas.Title id="offcanvasNavbarLabel">GeoEstate</Offcanvas.Title>
-                    </Offcanvas.Header>
-                    <Offcanvas.Body>
-                        <Nav className="justify-content-end flex-grow-1 pe-3">
-                            {/* Navigation Links */}
-                            <Nav.Link href="#home">Home</Nav.Link>
-                            <Nav.Link href="#price">Price</Nav.Link>
-                            <Nav.Link href="#company">Company</Nav.Link>
-                            <Nav.Link href="#blog">Blog</Nav.Link>
-                            <Nav.Link href="#contact">Contact</Nav.Link>
+    addGoogleTranslateScript();
+  }, []);
 
-                            {/* Login/Signup Buttons */}
-                            <Nav.Link
-                                href="./pages/signin.html"
-                                className="btn btn-outline-dark rounded-pill px-3 py-2 me-2"
-                            >
-                                Login
-                            </Nav.Link>
-                            <Nav.Link
-                                href="./pages/signup.html"
-                                className="btn btn-outline-success rounded-pill px-3 py-2"
-                            >
-                                Sign Up
-                            </Nav.Link>
+  return (
+    <Navbar expand="lg" bg="white" className="shadow-sm fixed-top py-3">
+      <Container>
 
-                            {/* Language Dropdown */}
-                            <NavDropdown
-                                className="d-flex align-items-center gap-1"
-                                id="navbarScrollingDropdown"
-                            >
-                                <NavDropdown.Item onClick={() => handleLanguageChange("French")}>
-                                    <img
-                                        src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg"
-                                        alt="French"
-                                        style={{ height: "15px", width: "20px", marginRight: "8px" }}
-                                    />
-                                    French
-                                </NavDropdown.Item>
-                                <NavDropdown.Item onClick={() => handleLanguageChange("German")}>
-                                    <img
-                                        src="https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg"
-                                        alt="German"
-                                        style={{ height: "15px", width: "20px", marginRight: "8px" }}
-                                    />
-                                    German
-                                </NavDropdown.Item>
-                            </NavDropdown>
+        <Navbar.Brand href="/">
+          <img src={ImgLogo} alt="Logo" style={{ height: "75px" }} />
+        </Navbar.Brand>
 
-                        </Nav>
-                    </Offcanvas.Body>
-                </Navbar.Offcanvas>
-            </Container>
-        </Navbar>
-    );
+
+        <Navbar.Toggle aria-controls="navbarNav" />
+
+
+        <Navbar.Collapse id="navbarNav">
+          <Nav className="mx-auto fs-5 ">
+            {["Home", "Price", "Company", "Blog", "Contact"].map((item) => (
+              <Nav.Link
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="nav-link-underline"
+              >
+                {item}
+              </Nav.Link>
+            ))}
+          </Nav>
+
+
+          <div className="d-flex align-items-center">
+
+            <div
+              id="google_translate_element"
+              style={{
+                display: "inline-block",
+              }}
+            ></div>
+
+
+            <Link to="/Sign">
+              <Button variant="outline-dark" className="rounded-pill ms-3">
+                Login
+              </Button>
+            </Link>
+            <Link to="/Signup">
+              <Button variant="outline-success" className="rounded-pill ms-2">
+                Sign Up
+              </Button>
+            </Link>
+          </div>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
 };
 
-export default Header;
-
-
-
+export default CustomNavbar;

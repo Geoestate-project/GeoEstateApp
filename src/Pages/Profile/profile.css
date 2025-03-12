@@ -1,7 +1,7 @@
 .sidebar {
     min-width: 60px;
     height: 100%;
-    background: #33db4a;
+    background: varvar(--color-bg);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -123,11 +123,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 2px solid #33db4a;
+    border: 2px solid var(--color-bg);
 }
 
 #calendar-content h3 {
-    color: #33db4a;
+    color: var(--color-bg);
     font-weight: bold;
 }
 
@@ -142,7 +142,7 @@
 
 #calendar-content h5 {
     margin-top: 20px;
-    color: #33db4a;
+    color: var(--color-bg);
 }
 
 #calendar-content p {
@@ -152,14 +152,14 @@
 }
 
 #calendar-content .btn-warning {
-    background-color: #33db4a;
+    background-color: var(--color-bg);
     color: #fff;
     border: none;
     transition: background-color 0.3s ease;
 }
 
 #calendar-content .btn-warning:hover {
-    background-color: #28a745;
+    background-color: var(--color-bg);
 }
 
 .companydata {
@@ -175,12 +175,12 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 2px solid #33db4a;
+    border: 2px solid var(--color-bg);
 }
 
 .tabs {
     display: flex;
-    border-bottom: 2px solid #28a745;
+    border-bottom: 2px solid var(--color-bg);
     margin-bottom: 20px;
 }
 
@@ -191,7 +191,7 @@
     font-weight: bold;
     cursor: pointer;
     color: white;
-    background-color: #28a745;
+    background-color: var(--color-bg);
 }
 
 .tab.inactive {
@@ -252,7 +252,7 @@
 }
 
 .submit-button {
-    background-color: #28a745;
+    background-color: var(--color-bg);
     color: white;
     font-weight: bold;
     padding: 10px 20px;
@@ -278,13 +278,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 2px solid #33db4a;
+    border: 2px solid var(--color-bg);
     border-radius: 8px;
 }
 
 .table-header {
     font-weight: bold;
-    background-color: #28a745;
+    background-color: var(--color-bg);
     color: white;
     padding: 15px;
     border-radius: 5px 5px 0 0;
@@ -304,7 +304,7 @@
 }
 
 .user-table th {
-    background-color: #28a745;
+    background-color: var(--color-bg);
     color: white;
 }
 
@@ -323,12 +323,12 @@
 
 .action-icons span {
     cursor: pointer;
-    color: #28a745;
+    color: var(--color-bg);
     font-weight: bold;
 }
 
 .create-user-button {
-    background-color: #33db4a;
+    background-color: var(--color-bg);
     color: white;
     padding: 10px 15px;
     border: none;
@@ -340,7 +340,7 @@
 }
 
 .create-user-button:hover {
-    background-color: #28a745;
+    background-color: var(--color-bg);
 }
 
 .memberdata {
@@ -355,7 +355,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 2px solid #33db4a;
+    border: 2px solid var(--color-bg);
     border-radius: 8px;
     font-family: Arial, sans-serif;
 }
@@ -382,7 +382,7 @@
 }
 
 .highlight {
-    color: #28a745;
+    color: var(--color-bg);
     font-weight: bold;
 }
 
@@ -398,11 +398,11 @@
 
 .link:hover {
     text-decoration: underline;
-    color: #33db4a;
+    color: var(--color-bg);
 }
 
 .button {
-    background-color: #33db4a;
+    background-color: var(--color-bg);
     color: white;
     font-weight: bold;
     padding: 10px 15px;
@@ -413,7 +413,7 @@
 }
 
 .button:hover {
-    background-color: #28a745;
+    background-color: var(--color-bg);
 }
 
 .bilingdata {
@@ -428,7 +428,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 2px solid #33db4a;
+    border: 2px solid var(--color-bg);
     border-radius: 8px;
     font-family: Arial, sans-serif;
 }
@@ -468,7 +468,7 @@
 }
 
 .button {
-    background-color: #33db4a;
+    background-color: var(--color-bg);
     color: white;
     font-weight: bold;
     padding: 10px 15px;
@@ -478,7 +478,7 @@
 }
 
 .button:hover {
-    background-color: #28a745;
+    background-color: var(--color-bg);
 }
 
 .table-section {
@@ -517,7 +517,7 @@
 }
 
 .user-table th {
-    background-color: #28a745;
+    background-color: var(--color-bg);
     color: white;
 }
 
@@ -530,13 +530,13 @@
 }
 
 .icon {
-    color: #28a745;
+    color: var(--color-bg);
     cursor: pointer;
     font-weight: bold;
 }
 
 .icon:hover {
-    color: #33db4a;
+    color: var(--color-bg);
 }
 
 .canclesection {
@@ -557,21 +557,6 @@
     z-index: 2000;
 }
 
-/* .modal-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  z-index: 2001;
-  display: none;
-  width: 300px;
-  text-align: center;
-  }
-   */
 .blur {
     filter: blur(5px);
 }
@@ -613,7 +598,7 @@
 }
 
 .personal-data-nav-link.active {
-    background: #28a745;
+    background: var(--color-bg);
     color: white;
 }
 
@@ -684,7 +669,7 @@
 }
 
 .save-button {
-    background-color: #28a745 !important;
+    background-color: var(--color-bg) !important;
     color: white;
     font-weight: bold;
     padding: 10px 20px;
@@ -694,7 +679,7 @@
 }
 
 .save-button:hover {
-    background-color: #218838;
+    background-color: var(--color-bg);
 }
 
 .terms {
@@ -705,7 +690,7 @@
 }
 
 .terms a {
-    color: #28a745;
+    color: var(--color-bg);
     text-decoration: none;
 }
 
@@ -716,7 +701,7 @@
 .sidebar {
     width: 60px;
     height: 100%;
-    background: #33db4a;
+    background: var(--color-bg);
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -740,7 +725,7 @@
 }
 
 .sidebar .nav-link:hover {
-    background-color: #28a745;
+    background-color: var(--color-bg);
     transform: scale(1.1);
 }
 
@@ -765,5 +750,5 @@
 }
 
 .sidebar .nav-link:hover i {
-    color: #f0d124;
+    color: var(--yellow-color);
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Nav } from "react-bootstrap";
+import { Nav, OverlayTrigger, Tooltip } from "react-bootstrap";
 import logo from "../../assests/img/logo-removebg-preview.png";
 import "./sidebar.css";
 
@@ -26,6 +26,11 @@ const UserPanelItems = [
         name: "Alert",
     },
     {
+        link: "/UserPanel/Exposes",
+        icon: "fas fa-paper-plane",
+        name: "Exposes",
+    },
+    {
         link: "/UserPanel/FavouritePage",
         icon: "fas fa-heart",
         name: "Favourite",
@@ -35,7 +40,13 @@ const UserPanelItems = [
         icon: "fa-solid fa-user",
         name: "Profile",
     },
-]
+    {
+        link: "/UserPanel/Exposes-External",
+        icon: "fa-solid fa-question-circle",
+        name: "Exposes External",
+    },
+
+];
 
 const AgentPanelItems = [
     {
@@ -68,7 +79,7 @@ const AgentPanelItems = [
         icon: "fas fa-user",
         name: "All Users",
     }
-]
+];
 
 const ClientPanelItems = [
     {
@@ -91,60 +102,80 @@ const ClientPanelItems = [
         icon: "fa-solid fa-info",
         name: "Info",
     }
-]
+];
 
 const Sidebar = () => {
-    const [iconSet, setIconSet] = useState(UserPanelItems)
+    const [iconSet, setIconSet] = useState(UserPanelItems);
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname.includes('ClientPanel')) {
-            console.log('You are at Client Panel')
-            setIconSet(ClientPanelItems)
-        } else if (location.pathname.includes('AgentPanel')) {
-            console.log('You are at Agent Panel')
-            setIconSet(AgentPanelItems)
+        if (location.pathname.includes("ClientPanel")) {
+            setIconSet(ClientPanelItems);
+        } else if (location.pathname.includes("AgentPanel")) {
+            setIconSet(AgentPanelItems);
+        } else if (
+            location.pathname.includes("users") ||
+            location.pathname.includes("properties") ||
+            location.pathname.includes("contact-us") ||
+            location.pathname.includes("roles")
+        ) {
+            setIconSet([
+                { link: "/users", icon: "fas fa-users", name: "Users" },
+                { link: "/properties", icon: "fas fa-building", name: "Properties" },
+                { link: "Exposes-External", icon: "fa-solid fa-question-circle", name: "External Exposed" },
+                { link: "/roles", icon: "fas fa-user-shield", name: "Roles" },
+                { link: "/contact-us", icon: "fas fa-envelope", name: "Contact Us" },
+            ]);
         } else {
-            console.log('You are at User Panel')
-            setIconSet(UserPanelItems)
+            setIconSet(UserPanelItems);
         }
-    }, [location])
-
+    }, [location]);
 
     return (
         <div className="main-container">
-            <Nav className="flex-column  sidebar gap-3">
+            <Nav className="flex-column sidebar gap-3">
                 {/* Logo */}
                 <Nav.Item>
-                    <img src={logo} alt="" />
+                    <img src={logo} alt="Logo" />
                 </Nav.Item>
 
-                {/* Change Item based on path */}
-                {
-                    iconSet.map(e =>
+                {/* Dynamic navigation items with tooltips */}
+                {iconSet.map((e, index) => (
+                    <OverlayTrigger
+                        key={index}
+                        placement="right"
+                        overlay={
+                            <Tooltip id={`tooltip-${e.name}`} className="custom-tooltip">
+                                {e.name}
+                            </Tooltip>
+                        }
+                    >
                         <Nav.Item className="ms-2">
-                            <Nav.Link as={Link} to={e.link} title={e.name}>
+                            <Nav.Link as={Link} to={e.link}>
                                 <i className={e.icon}></i>
-                                <span>{e.name}</span>
                             </Nav.Link>
                         </Nav.Item>
-                    )
-                }
+                    </OverlayTrigger>
 
-                {/* Logout */}
-                <Nav.Item className="ms-2">
-                    <Nav.Link
-                        as={Link}
-                        to="../signin"
-                        className="border-top border-top-1 border-dark pt-4"
-                        title="Log out"
-                    >
-                        <i className="fa-solid fa-right-from-bracket"></i>
-                        <span>Log out</span>
-                    </Nav.Link>
-                </Nav.Item>
+                ))}
+
+                {/* Logout with tooltip */}
+                <OverlayTrigger
+                    placement="right"
+                    overlay={<Tooltip id="tooltip-logout" className="custom-tooltip">Log out</Tooltip>}
+                >
+                    <Nav.Item className="ms-2">
+                        <Nav.Link
+                            as={Link}
+                            to="../signin"
+                            className="border-top border-top-1 border-dark pt-4"
+                        >
+                            <i className="fa-solid fa-right-from-bracket"></i>
+                        </Nav.Link>
+                    </Nav.Item>
+                </OverlayTrigger>
             </Nav>
-        </div >
+        </div>
     );
 };
 

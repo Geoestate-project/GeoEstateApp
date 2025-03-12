@@ -3,8 +3,6 @@
   /* height: 100vh; */
 }
 
-
-
 /* Reset Leaflet tile styles */
 .leaflet-container img {
   max-width: none !important;
@@ -76,7 +74,7 @@
   justify-content: center;
 }
 
-.clear-directions-button{
+.clear-directions-button {
   position: absolute;
   bottom: 20px;
   left: 35%;
@@ -92,7 +90,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
 
 .clear-directions-button:hover {
@@ -108,7 +105,6 @@
 .draw-zone-button svg {
   margin-right: 5px; /* Space between the icon and text */
 }
-
 
 @media (min-width: 992px) {
   .draw-zone-button {
@@ -141,11 +137,10 @@
 
 /* Positioning for small screens (phones) */
 @media (max-width: 767px) {
-  .draw-zone-button{
+  .draw-zone-button {
     bottom: 10px; /* Less space at the bottom for smaller screens */
     font-size: 14px; /* Smaller font size for mobile */
     padding: 8px 12px; /* Adjust padding for mobile */
-    width: 90%; /* Make the buttons take more width on smaller screens */
     left: 50%; /* Center horizontally */
     transform: translateX(-50%);
   }
@@ -153,7 +148,6 @@
     bottom: 40px; /* Less space at the bottom for smaller screens */
     font-size: 14px; /* Smaller font size for mobile */
     padding: 8px 12px; /* Adjust padding for mobile */
-    width: 90%; /* Make the buttons take more width on smaller screens */
     left: 50%; /* Center horizontally */
     transform: translateX(-50%);
   }
@@ -162,23 +156,139 @@
   .clear-directions-button {
     margin-top: 0px; /* Space between the buttons */
   }
-  .draw-zone-button{
+  .draw-zone-button {
     margin-top: 15px;
   }
 }
 
 /* Positioning for very small screens (extra small phones) */
 @media (max-width: 576px) {
-  .draw-zone-button{
-    
+  .draw-zone-button {
     bottom: -40px; /* Less bottom spacing */
     font-size: 12px; /* Even smaller font on very small screens */
     padding: 10px 15px; /* Adjust padding further */
   }
   .clear-directions-button {
-
     bottom: -75px; /* Less bottom spacing */
     font-size: 12px; /* Even smaller font on very small screens */
     padding: 6px 10px; /* Adjust padding further */
   }
+}
+/* Property Modal Styling - Left Aligned */
+.property-modal-container {
+  position: absolute;
+  left: 20px;
+  width: 350px;
+  z-index: 1000;
+}
+
+.property-modal {
+  background: white;
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
+
+/* Close Button */
+.modal-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Property Image */
+.property-image img {
+  width: 18 !important;
+  height: 26vh;
+}
+
+
+/* Property Info */
+.property-info {
+  text-align: left;
+}
+
+.property-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.property-price {
+  font-size: 16px;
+  color: #ff5a5f;
+  font-weight: bold;
+}
+
+.property-location {
+  font-size: 14px;
+  color: #555;
+}
+
+.property-specs {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+/* Action Buttons */
+.property-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+.save-btn, .contact-btn {
+  width: 48%;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background: #f5f5f5;
+}
+
+.contact-btn {
+  background: #007bff;
+  color: white;
+}
+
+/* Share and Download Buttons */
+.property-share {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.whatsapp-btn, .pdf-btn, .download-btn {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.whatsapp-btn {
+  background: #25d366;
+  color: white;
+}
+
+.pdf-btn {
+  background: #ff9800;
+  color: white;
+}
+
+.download-btn {
+  background: #4caf50;
+  color: white;
 }
