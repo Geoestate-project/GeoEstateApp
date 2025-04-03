@@ -26,6 +26,7 @@ import {
   Marker,
   InfoWindow
 } from "@react-google-maps/api";
+import PropertyPDFContent from "./PropertyPDFContent";
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -39,6 +40,11 @@ const PropertyDetail = () => {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const mapRef = useRef(null);
+  const [generatedRecord, setGeneratedRecord] = useState(null);
+
+  const handleGenerateRecord = (recordData) => {
+    setGeneratedRecord(recordData);
+  };
 
   // Fetch property details by id
   const fetchPropertyById = async (propertyId) => {
@@ -169,19 +175,44 @@ const PropertyDetail = () => {
   const mapCenter = property?.latitud && property?.longitud 
     ? { lat: property.latitud, lng: property.longitud }
     : userLocation || { lat: 40.416775, lng: -3.703790 }; // Default to Madrid if no coordinates
-
+   
+    const handlePrint = () => {
+      const printContent = document.getElementById("pdf").innerHTML;
+      const printWindow = window.open("", "");
+    
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print</title>
+            <style>
+              body { font-family: Arial, sans-serif; padding: 20px; }
+            </style>
+          </head>
+          <body>${printContent}</body>
+        </html>
+      `);
+    
+      printWindow.document.close();
+      printWindow.print();
+    };
+    
+    
   return (
     <>
-      <PropertyDetailHeader />
+      <PropertyDetailHeader   onGenerateRecord={handleGenerateRecord} propertyId={property.idPropiedad} />
+     
 
       {/* PDF Download Button on top */}
       <Container className="my-4">
         <Row>
           <Col className="text-center">
-            <Button>Download PDF</Button>
+            <Button onClick={handlePrint}>Download PDF</Button>
           </Col>
         </Row>
       </Container>
+      <div id="pdf" className="d-none">
+      <PropertyPDFContent recordData={generatedRecord}  property={property} photos={photos} img={img} />
+      </div>
 
       {/* 
         Dedicated container for PDF content.
@@ -278,7 +309,7 @@ const PropertyDetail = () => {
               <Button variant="dark" className="d-flex align-items-center">
                 <FaEuroSign className="me-2" /> APPRECIATE
               </Button>
-              <Button variant="dark" className="d-flex align-items-center">
+              <Button onClick={handlePrint} variant="dark" className="d-flex align-items-center">
                 <FaFilePdf className="me-2" /> RECRUITMENT REPORT
               </Button>
               <TaskModal show={showModal} handleClose={() => setShowModal(false)} />

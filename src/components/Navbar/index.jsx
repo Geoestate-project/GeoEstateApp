@@ -10,6 +10,7 @@ import FrenchFlag from "../../assests/img/French.svg";
 
 const CustomNavbar = () => {
   return (
+   
     <Navbar expand="lg" bg="white" className="shadow-sm  py-3">
       <Container>
         {/* Logo */}
@@ -35,15 +36,24 @@ const CustomNavbar = () => {
           </Nav>
 
           {/* Right-Aligned Section */}
-          <div className="d-flex align-items-center">
-            {/* Google Translate Widget */}
-            <div
-              id="google_translate_element"
-              style={{
-                display: "inline-block",
-                marginRight: "10px",
-              }}
-            ></div>
+          <div className="d-flex flex-column flex-md-row align-items-md-center row-gap-2 mt-2 mt-md-0">
+            {/* Google Translate Widget - Custom Styled */}
+            <style>
+    {`
+      .VIpgJd-ZVi9od-xl07Ob-lTBxed,.goog-te-gadget-simple {
+        display: flex !important;
+      }
+     
+    `}
+  </style>
+            <div className="translate-wrapper d-flex me-2">
+              <div 
+                id="google_translate_element"
+                style={{
+                  display: "inline-block",
+                }}
+              ></div>
+            </div>
 
             {/* Login/Sign Up Buttons */}
             <Link to="/Sign">

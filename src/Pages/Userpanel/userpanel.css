@@ -743,6 +743,7 @@
 }
 
 @media (max-width: 576px) {
+
   .top-bar {
     gap: 5px;
   }

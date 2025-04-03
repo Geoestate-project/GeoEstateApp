@@ -5,7 +5,7 @@ import CommentModal from "../CommentModal";
 import FavoritesModal from "../FavoritesModal";
 import GenerateRecordModal from "../GenerateRecord"; 
 
-const PropertyDetailHeader = () => {
+const PropertyDetailHeader = ({propertyId,onGenerateRecord }) => {
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showFavoritesModal, setShowFavoritesModal] = useState(false);
   const [showGenerateRecordModal, setShowGenerateRecordModal] = useState(false);
@@ -41,8 +41,12 @@ const PropertyDetailHeader = () => {
       
       {/* Modals */}
       <CommentModal show={showCommentModal} handleClose={() => setShowCommentModal(false)} />
-      <FavoritesModal show={showFavoritesModal} handleClose={() => setShowFavoritesModal(false)} />
-      <GenerateRecordModal show={showGenerateRecordModal} handleClose={() => setShowGenerateRecordModal(false)} />
+      <FavoritesModal productId={propertyId} show={showFavoritesModal} handleClose={() => setShowFavoritesModal(false)} />
+      <GenerateRecordModal 
+        show={showGenerateRecordModal} 
+        handleClose={() => setShowGenerateRecordModal(false)}
+        onGenerate={onGenerateRecord}  // Pass the callback
+      />
     </div>
   );
 };

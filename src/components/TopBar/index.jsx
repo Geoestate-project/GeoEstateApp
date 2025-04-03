@@ -283,7 +283,7 @@ const TopBar = ({ properties, updateProperties }) => {
         />
         <Navbar.Collapse id="navbar-side">
           <Nav className="me-auto w-100 d-flex flex-column flex-lg-row align-items-center">
-            <Form className="d-flex flex-column flex-md-row w-100 mb-3 mb-lg-0 align-items-center">
+            <Form className="d-flex flex-column flex-md-row w-100 mb-3 mb-lg-0 align-items-start align-items-md-center">
               <FormControl
                 type="text"
                 placeholder="Search location..."
@@ -324,7 +324,7 @@ const TopBar = ({ properties, updateProperties }) => {
             </Form>
           </Nav>
 
-          <div className="d-flex flex-column flex-md-row justify-content-end align-items-center w-100">
+          <div className="d-flex flex-column flex-md-row justify-content-end align-items-start align-items-md-center w-100">
             <Button
               variant="outline-light"
               className="rounded-1 mx-2 my-1"
@@ -334,156 +334,10 @@ const TopBar = ({ properties, updateProperties }) => {
               <FontAwesomeIcon icon={faFilter} /> Filter
             </Button>
 
-            <Button
-              variant="outline-light"
-              className="rounded-1 mx-2 my-1 d-flex flex-row align-items-center gap-2 text-nowrap"
-              style={{ backgroundColor: "var(--color-bg)" }}
-              onClick={() => {
-                fetchProperties();
-                setShowMoreFilters(true);
-              }}
-            >
-              <i className="fa-solid fa-magnifying-glass"></i> More Filters
-            </Button>
+           
 
             <div className="d-flex flex-column flex-lg-row my-1">
-              <Offcanvas
-                show={showMoreFilters}
-                onHide={() => setShowMoreFilters(false)}
-                placement="end"
-                className="modal-custom-bg"
-              >
-                <Offcanvas.Header closeButton>
-                  <Offcanvas.Title className="text-white">
-                    More Filters
-                  </Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                  <Form>
-                    {/* Province Dropdown */}
-                    <Form.Group controlId="formProvince">
-                      <Form.Label className="text-white">
-                        Province
-                      </Form.Label>
-                      <Form.Select
-                        className="custom-modal-color"
-                        value={filters.province || ""}
-                        onChange={(e) =>
-                          handleProvinceChange(e.target.value)
-                        }
-                      >
-                        <option value="">Select Province</option>
-                        {provinces.map((province) => (
-                          <option
-                            key={province.idProvincia}
-                            value={province.idProvincia}
-                          >
-                            {province.idProvincia}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-
-                    {/* Zone Dropdown */}
-                    <Form.Group controlId="formZone" className="mt-3">
-                      <Form.Label className="text-white">Zone</Form.Label>
-                      <Form.Select
-                        className="custom-modal-color"
-                        value={filters.zone || ""}
-                        onChange={(e) =>
-                          setFilters({ ...filters, zone: e.target.value })
-                        }
-                        disabled={!filters.province}
-                      >
-                        <option value="">Select Zone</option>
-                        {zones.length > 0 ? (
-                          zones.map((zone) => (
-                            <option key={zone.idZona} value={zone.idZona}>
-                              {zone.nombreZona}
-                            </option>
-                          ))
-                        ) : (
-                          <option disabled>Loading...</option>
-                        )}
-                      </Form.Select>
-                    </Form.Group>
-
-                    {/* Municipality Dropdown */}
-                    <Form.Group controlId="formMunicipality" className="mt-3">
-                      <Form.Label>Municipality</Form.Label>
-                      <Form.Select
-                        value={filters.municipality || ""}
-                        onChange={(e) =>
-                          setFilters({
-                            ...filters,
-                            municipality: e.target.value,
-                          })
-                        }
-                        disabled={!filters.zone}
-                      >
-                        <option value="">Select Municipality</option>
-                        {municipalities.length > 0 ? (
-                          municipalities.map((municipality) => (
-                            <option
-                              key={municipality.idMunicipio}
-                              value={municipality.idMunicipio}
-                            >
-                              {municipality.nombre}
-                            </option>
-                          ))
-                        ) : (
-                          <option disabled>Loading...</option>
-                        )}
-                      </Form.Select>
-                    </Form.Group>
-
-                    {/* Calles Dropdown */}
-                    <Form.Group controlId="formCalles" className="mt-3">
-                      <Form.Label>Calles</Form.Label>
-                      <Form.Select
-                        value={filters.calle || ""}
-                        onChange={(e) =>
-                          setFilters({ ...filters, calle: e.target.value })
-                        }
-                      >
-                        <option value="">Select Calle</option>
-                        {calles.length > 0 ? (
-                          calles.map((calle) => (
-                            <option key={calle.idCalle} value={calle.idCalle}>
-                              {calle.nombre}
-                            </option>
-                          ))
-                        ) : (
-                          <option disabled>Loading...</option>
-                        )}
-                      </Form.Select>
-                    </Form.Group>
-
-                    <div className="d-flex mt-4 flex-column flex-md-row">
-                      <Button
-                        variant="primary"
-                        className="custom-modal-color mb-2 mb-md-0"
-                        onClick={() => {
-                          fetchProperties();
-                          setShowMoreFilters(false);
-                        }}
-                      >
-                        Apply Filters
-                      </Button>
-                      <Button
-                        variant="secondary"
-                        className="custom-modal-color ms-md-3"
-                        onClick={() => {
-                          handleClearFilters();
-                          setShowMoreFilters(false);
-                        }}
-                      >
-                        Clear Filters
-                      </Button>
-                    </div>
-                  </Form>
-                </Offcanvas.Body>
-              </Offcanvas>
+           
 
               <Dropdown className="mx-2 my-1">
                 <Dropdown.Toggle

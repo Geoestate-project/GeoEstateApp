@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { MdRemoveRedEye } from "react-icons/md";
+import { toast } from 'react-toastify';
 import logo from "../../assests/img/logo.png";
 import "./signin1.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,10 +14,9 @@ const Signin1 = () => {
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false); // Admin mode toggle
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const { roles } = useContext(RolesContext);
-
     const navigate = useNavigate();
 
     const handleEmailChange = (e) => {
@@ -33,7 +33,6 @@ const Signin1 = () => {
 
     const toggleAdminMode = (e) => {
         e.preventDefault();
-        // Toggle admin mode and clear errors if any
         setIsAdmin(prev => !prev);
         setError(null);
     };
@@ -43,9 +42,9 @@ const Signin1 = () => {
         setError(null);
         setLoading(true);
 
-        // In admin mode, verify that the email is the superadmin's email
         if (isAdmin && email !== "sanan.suisse@gmail.com") {
             setError("Unauthorized admin email. Please use the correct admin email.");
+            toast.error("Unauthorized admin email");
             setLoading(false);
             return;
         }
@@ -65,33 +64,51 @@ const Signin1 = () => {
             });
 
             const data = await response.json();
-            console.log("API Response:", data);
             localStorage.setItem('user_id', data.userId);
+            localStorage.setItem('isAuthenticated', true);
 
             if (!response.ok) {
                 throw new Error(data.message || "Login failed. Please check your credentials.");
             }
 
-            console.log("Login successful:", data);
+            toast.success("Login successful!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
 
-            // Store token if provided
             if (data.token) {
                 localStorage.setItem("authToken", data.token);
             }
 
-            // Navigate based on mode: admin goes to /users, normal user goes to /
-            if (isAdmin) {
-                navigate("/users");
-            } else {
-                const role = roles.find(role => role.id = data.roles)
-                console.log(role);
-                if (role.name !== "Buyer")
-                    navigate(`/${role.name}Panel`)
-                else
-                    navigate("/UserPanel")
-            }
+            // Navigate after short delay to see toast
+            setTimeout(() => {
+                if (isAdmin) {
+                    navigate("/users");
+                } else {
+                    const role = roles.find(role => role.id === data.roles);
+                    if (role?.name !== "Buyer") {
+                        navigate(`/${role?.name}Panel`);
+                    } else {
+                        navigate("/UserPanel");
+                    }
+                }
+            }, 1000);
+
         } catch (error) {
-            console.error("Login Error:", error);
+            toast.error(error.message || "Login failed. Please try again.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
             setError(error.message);
         } finally {
             setLoading(false);
@@ -104,10 +121,11 @@ const Signin1 = () => {
                 <div className="__login-logo text-center mb-4">
                     <img src={logo} alt="GeoEstate" style={{ width: "120px" }} />
                 </div>
-                {/* Added heading that toggles between Login and Login as Admin */}
                 <h2 className="text-center mb-4">{isAdmin ? "Login as Admin" : "Login"}</h2>
+                
                 <Form onSubmit={handleSubmit}>
                     {error && <p className="text-danger text-center">{error}</p>}
+                    
                     <Form.Group className="mb-3" controlId="formEmail">
                         <Form.Label className="__form-label">E-mail</Form.Label>
                         <Form.Control
@@ -116,6 +134,7 @@ const Signin1 = () => {
                             className="__form-control"
                             value={email}
                             onChange={handleEmailChange}
+                            required
                         />
                     </Form.Group>
 
@@ -128,6 +147,7 @@ const Signin1 = () => {
                                 className="__form-control"
                                 value={password}
                                 onChange={handlePasswordChange}
+                                required
                             />
                             <InputGroup.Text
                                 className="__input-group-text"
@@ -148,8 +168,12 @@ const Signin1 = () => {
                         />
                     </Form.Group>
 
-                    <Button type="submit" className="__enterbutton btn btn-success w-100 mb-3">
-                        Enter
+                    <Button 
+                        type="submit" 
+                        className="__enterbutton btn btn-success w-100 mb-3"
+                        disabled={loading}
+                    >
+                        {loading ? "Logging in..." : "Enter"}
                     </Button>
                 </Form>
 
@@ -175,7 +199,7 @@ const Signin1 = () => {
                         </Link>
                     </p>
                 </div>
-                <div className="__newsignup text-center mt-2" >
+                <div className="__newsignup text-center mt-2">
                     <a style={{ color: "black" }} href="#" onClick={toggleAdminMode}>
                         {isAdmin ? "Switch to User Login" : "Login as Admin"}
                     </a>

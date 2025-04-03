@@ -124,7 +124,7 @@
 @media (max-width: 991px) and (min-width: 768px) {
   .draw-zone-button {
     bottom: 20px;
-    left: 60%;
+    left: 77%;
     transform: translateX(-40%);
   }
 
@@ -138,17 +138,17 @@
 /* Positioning for small screens (phones) */
 @media (max-width: 767px) {
   .draw-zone-button {
-    bottom: 10px; /* Less space at the bottom for smaller screens */
+    bottom: 40px; /* Less space at the bottom for smaller screens */
     font-size: 14px; /* Smaller font size for mobile */
     padding: 8px 12px; /* Adjust padding for mobile */
-    left: 50%; /* Center horizontally */
+    left: 75%; /* Center horizontally */
     transform: translateX(-50%);
   }
   .clear-directions-button {
     bottom: 40px; /* Less space at the bottom for smaller screens */
     font-size: 14px; /* Smaller font size for mobile */
     padding: 8px 12px; /* Adjust padding for mobile */
-    left: 50%; /* Center horizontally */
+    left: 28%; /* Center horizontally */
     transform: translateX(-50%);
   }
 
@@ -163,13 +163,18 @@
 
 /* Positioning for very small screens (extra small phones) */
 @media (max-width: 576px) {
+  .top-bar .live-location-control{
+    right:  39%;
+    }
   .draw-zone-button {
-    bottom: -40px; /* Less bottom spacing */
+    left: 32%;
+    bottom: 10px; /* Less bottom spacing */
     font-size: 12px; /* Even smaller font on very small screens */
     padding: 10px 15px; /* Adjust padding further */
   }
   .clear-directions-button {
-    bottom: -75px; /* Less bottom spacing */
+    bottom: 10px; /* Less bottom spacing */
+    left: 77%;
     font-size: 12px; /* Even smaller font on very small screens */
     padding: 6px 10px; /* Adjust padding further */
   }
@@ -291,4 +296,82 @@
 .download-btn {
   background: #4caf50;
   color: white;
+}
+
+
+.map-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Drawing mode styles */
+.map-container.drawing-mode {
+  cursor: crosshair !important;
+}
+
+/* Enhanced marker styles for better clickability */
+.map-container:not(.drawing-mode) img[src*="map"],
+.map-container:not(.drawing-mode) img[src*="marker"] {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 9999 !important;
+}
+
+/* Drawing mode cursor override */
+.map-container.drawing-mode img[src*="map"],
+.map-container.drawing-mode img[src*="marker"] {
+  pointer-events: none !important;
+}
+
+/* Button styles */
+.draw-zone-button {
+  position: absolute;
+  z-index: 1000;
+
+  border-radius: 4px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+.clear-directions-button {
+  position: absolute;
+  padding: 8px 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+/* Override Google Maps styles to ensure proper cursor behavior */
+.gm-style {
+  cursor: default !important;
+}
+
+.gm-style.drawing-active {
+  cursor: crosshair !important;
+}
+/* Add this to your map.css or style tag */
+.gm-style {
+  right: 320px !important; /* Make space for the sidebar */
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Apply to focused marker */
+.gm-style img[src*="for-blue"] {
+  animation: pulse 1s ease-in-out;
+  z-index: 1000 !important;
+}
+/* Style for the property boundary */
+.gmnoprint circle {
+  animation: pulseBoundary 2s infinite;
+}
+
+@keyframes pulseBoundary {
+  0% { stroke-opacity: 0.8; fill-opacity: 0.35; }
+  50% { stroke-opacity: 1; fill-opacity: 0.5; }
+  100% { stroke-opacity: 0.8; fill-opacity: 0.35; }
 }

@@ -15,7 +15,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     return <Navigate to="/Sign" />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(role)) {
+  if (!allowedRoles && !allowedRoles.includes(role)) {
     // Redirect to Unauthorized page if the role is not allowed
     return <Navigate to="/unauthorized" />;
   }

@@ -133,7 +133,7 @@
 
 /* Individual image styling */
 .property-image {
-    width: 200px;
+    /* width: 200px; */
     border-radius: 6px;
     object-fit: cover;
 }
